@@ -21,6 +21,10 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+// Products Route
+Route::view('/products/{any}', 'products.index')
+    ->middleware('auth')
+    ->where('any', '.*');
 
 
 require __DIR__.'/auth.php';
