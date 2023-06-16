@@ -9,14 +9,19 @@ export default function useProducts() {
   const router = useRouter();
 
   const getProducts = async () => {
-    let response = await axios.get("/api/products");
-    console.log(response.data);
-    products.value = response.data;
+    try {
+      const response = await axios.get("/api/products");
+      products.value = response.data.data; 
+    } catch (error) {
+      console.error(error);
+    }
   };
+  
+  
 
   const getProduct = async (id) => {
     let response = await axios.get("/api/products/" + id);
-    product.value = response.data;
+    product.value = response.data.data;
   };
 
   const storeProduct = async (data) => {

@@ -24,7 +24,7 @@
                 <th class="px-6 py-3 bg-gray-50">
                 </th>
             </tr>
-            <h1>hello</h1>
+          
         </thead>
 
         <tbody class="bg-white divide-y divide-gray-200 divide-solid">

@@ -5,6 +5,7 @@ import Alpine from 'alpinejs';
 window.Alpine = Alpine;
 
 Alpine.start();
+import 'bootstrap/dist/css/bootstrap.css';
 
 import { createApp } from "vue";
 import router from '@/router/index.js';

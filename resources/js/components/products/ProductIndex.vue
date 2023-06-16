@@ -1,24 +1,25 @@
 <template>
-<div class="overflow-hidden overflow-x-auto min-w-full align-middle sm:rounded-md">
-    <div class="flex place-content-end mb-4">
+    <div class="overflow-hidden overflow-x-auto min-w-full align-middle sm:rounded-md">
+      <div class="flex place-content-end mb-4">
         <div class="px-4 py-2 text-white bg-indigo-600 hover:bg-indigo-700 rounded-md cursor-pointer">
-            <router-link :to="{ name: 'products.create' }" class="text-sm font-medium">Create product</router-link>
+          <router-link :to="{ name: 'products.create' }" class="text-sm font-medium">Create product</router-link>
         </div>
-    </div>
-    <table class="min-w-full">
+      </div>
+      <table class="min-w-full">
         <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Category</th>
-                <th>Availability</th>
-                <th>Action</th>
-            </tr>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Category</th>
+            <th>Availability</th>
+            <th>Action</th>
+          </tr>
         </thead>
         <tbody>
-            <tr v-for="item in products" :key="item.id">
+            <template v-if="products">
+              <tr v-for="item in products" :key="item.id">
                 <td>{{ item.name }}</td>
                 <td>{{ item.description }}</td>
                 <td>{{ item.price }}</td>
@@ -26,41 +27,54 @@
                 <td>{{ item.category }}</td>
                 <td>{{ item.is_available }}</td>
                 <td>
-                    <button @click="editProduct(item.id)" class="text-blue-500 hover:text-blue-700" title="Edit">
-                        <i class="fas fa-edit"></i>
+                    <router-link :to="{ name: 'products.edit', params: { id: item.id } }" class="mr-2 inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                        Edit
+                    </router-link>
+                    <button @click="deleteProduct(item.id)" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                        Delete
                     </button>
-                    <button @click="deleteProduct(item.id)" class="text-red-500 hover:text-red-700" title="Delete">
-                        <i class="fas fa-trash"></i>
-                    </button>
+                      
                 </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-</template>
+              </tr>
+            </template>
+            <template v-else>
+              <tr>
+                <td colspan="7">No products found.</td>
+              </tr>
+            </template>
+          </tbody>
+          
+      </table>
+    </div>
+  </template>
+  
+  <script>
+  import useProducts from "@/composables/products";
+  import { onMounted } from "vue";
+  
+  export default {
+    setup() {
+      const { products, getProducts, destroyProduct } = useProducts();
+  
+      onMounted(getProducts);
+  
+      const deleteProduct = async (id) => {
+        if (!window.confirm("Are you sure?")) {
+          return;
+        }
+        await destroyProduct(id);
+        await getProducts();
+      };
+  
 
-<script>
-import useProducts from "@/composables/products";
-import {
-    onMounted
-} from "vue";
-
-const {
-    products,
-    getProducts,
-    destroyProduct
-} = useProducts();
-onMounted(getProducts);
-
-const deleteProduct = async (id) => {
-    if (!window.confirm("Are you sure?")) {
-        return;
-    }
-    await destroyProduct(id);
-    await getProducts();
-};
-</script>
-
-<style>
-
-</style>
+      return {
+        products,
+        deleteProduct,
+      };
+    },
+  };
+  </script>
+  
+  <style>
+  </style>
+  
