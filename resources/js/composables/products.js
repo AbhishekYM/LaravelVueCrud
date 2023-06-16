@@ -11,6 +11,7 @@ export default function useProducts() {
   const getProducts = async () => {
     try {
       const response = await axios.get("/api/products");
+      console.log(response.data.data);
       products.value = response.data.data; 
     } catch (error) {
       console.error(error);
@@ -25,16 +26,16 @@ export default function useProducts() {
   };
 
   const storeProduct = async (data) => {
-    errors.value = "";
+    errors.value = ''
     try {
-      await axios.post("/api/products/", data);
-      await router.push({ name: "products.index" });
+        await axios.post('/api/products/', data)
+        await router.push({name: 'products.index'})
     } catch (e) {
-      if (e.response.status === 422) {
-        errors.value = e.response.data.errors;
-      }
+        if (e.response.status === 422) {
+            errors.value = e.response.data.errors
+        }
     }
-  };
+}
 
   const updateProduct = async (id) => {
     errors.value = "";

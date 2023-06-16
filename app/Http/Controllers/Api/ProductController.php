@@ -24,6 +24,7 @@ class ProductController extends Controller
     public function create(CreateProductRequest $request)
     {
         $product = Product::create($request->validated());
+
         return new ProductResource($product);
     }
 
@@ -32,9 +33,24 @@ class ProductController extends Controller
      */
     public function store(CreateProductRequest $request)
     {
-        $product = Product::create($request->validated());
+        $productData = $request->validated();
+    
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $imageName = $file->getClientOriginalName(); // Use the original image name as the file name
+            $filePath = $file->storeAs('public/apiDocs', $imageName); // Store the file with the specified name
+            $productData['image'] = $imageName; // Store the image name in the "image" column
+        }
+    
+        $product = Product::create($productData);
+    
+        $product->image_url = asset('storage/apiDocs/' . $product->image); // Set the image URL in the response
+    
         return new ProductResource($product);
     }
+    
+    
+    
     /**
      * Display the specified resource.
      */

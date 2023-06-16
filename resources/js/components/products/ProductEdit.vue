@@ -26,6 +26,14 @@
             <input type="checkbox" id="is_available" class="form-check-input" v-model="product.is_available" />
             <label for="is_available" class="form-check-label">Is Available</label>
         </div>
+        <div class="mb-3">
+            <label for="file" class="form-label">Choose an Image</label>
+            <div class="input-group">
+              <input type="file" id="file" class="form-control" @change="product.image" accept="image" />
+              <label class="input-group-text" for="file">Browse</label>
+            </div>
+          </div>
+          
         <button type="submit" class="btn btn-primary">Update</button>
     </form>
 
@@ -33,18 +41,11 @@
 </div>
 </template>
 
-<script>
+<script setup>
 import useProducts from "@/composables/products";
-import {
-    onMounted
-} from "vue";
+import { onMounted } from "vue";
 
-const {
-    errors,
-    product,
-    getProduct,
-    updateProduct
-} = useProducts()
+const { errors, product, getProduct, updateProduct } = useProducts()
 const props = defineProps({
     id: {
         required: true,
