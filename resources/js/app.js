@@ -1,22 +1,31 @@
 import './bootstrap';
-
 import Alpine from 'alpinejs';
-
-window.Alpine = Alpine;
-
-Alpine.start();
 import 'bootstrap/dist/css/bootstrap.css';
-
 import { createApp } from "vue";
+import DataTable from 'datatables.net-vue3';
 import router from '@/router/index.js';
 import CompaniesIndex from '@/components/companies/CompaniesIndex.vue';
 import ProductsIndex from '@/components/products/ProductIndex.vue';
-createApp({
-    components: {
-        CompaniesIndex,
-        ProductsIndex,
-    }
-}).use(router).mount('#app')
+import 'datatables.net-dt/css/jquery.dataTables.css';
+// import 'datatables.net-select-dt/css/select.dataTables.css';
+import 'jquery';
+import DataTables from 'datatables.net';
+import DataTablesVue3 from 'datatables.net-vue3';
+// import 'datatables.net-select-dt/css/select.dataTables.css';
+
+
+DataTables.use(DataTablesVue3);
+const app = createApp({
+  components: {
+    CompaniesIndex,
+    ProductsIndex,
+  },
+});
+
+app.component('DataTable', DataTable);
+
+app.use(router).mount('#app');
+
 // import { createApp } from "vue";
 // import router from "@/router/index.js";
 // import CompaniesIndex from "@/components/companies/CompaniesIndex.vue";
